@@ -5,7 +5,16 @@
 > *If in the first act you have hung a pistol on the wall, then in the following one it should be fired.* (Anton Chekhov)
 >
 > chekhov keeps track of the pistols: every setup, every echo, every rule of the work, anchored to sentences in the manuscript.
+
 [한국어 README](README.ko.md)
+
+## Why this exists
+
+I do not want AI to dominate literature. What I hope for is that, with AI's help, writers who are still learning their craft can develop their own stories into something more valuable, and share them with the world.
+
+chekhov is built on that hope. The story and what it means belong to the writer. The AI helps the writer keep track of what they decided, and the writer always makes the call.
+
+## What it does
 
 When you revise fiction with an AI agent, the agent forgets. It rewrites a sentence that was quietly setting up the ending, cuts a scene whose echo comes six chapters later, or lets the narrator start naming feelings he was never supposed to name. chekhov gives the work a memory that both you and the agent can check:
 
