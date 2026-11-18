@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "storygraph"
+version = "0.1.0"
+description = "Keep a manuscript consistent with a semantic graph of its themes, persona, motifs, setups and payoffs."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{ name = "storygraph contributors" }]
+keywords = ["fiction", "writing", "manuscript", "semantic-graph", "consistency", "llm-agent"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Text Processing :: Linguistic",
+  "Natural Language :: Korean",
+  "Natural Language :: English",
+]
+dependencies = ["python-docx>=1.1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+storygraph = "storygraph.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/storygraph"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

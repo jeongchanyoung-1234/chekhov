@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+# Word lock files
+~$*
+# keep private manuscripts out of the repo
+private/

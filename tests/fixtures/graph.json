@@ -1,0 +1,30 @@
+{
+ "meta": {"title": "The Lantern", "language": "en", "chapter_pattern": "^\\[(\\d+)\\]"},
+ "invariants": [
+  {"id": "I-1", "kind": "persona", "chapters": "1-2", "rule": "Nobody asks questions before the last chapter.",
+   "check": {"type": "no_question_dialogue", "chapters": "1-2"}},
+  {"id": "I-2", "kind": "structure", "rule": "The word 'suddenly' is never used.",
+   "check": {"type": "forbidden_terms", "terms": ["suddenly"]}}
+ ],
+ "facts": [],
+ "nodes": [
+  {"id": "T0", "type": "Theme", "label": "waiting"},
+  {"id": "CH1", "type": "Chapter", "label": "Spring", "order": 1},
+  {"id": "CH2", "type": "Chapter", "label": "Summer", "order": 2},
+  {"id": "CH3", "type": "Chapter", "label": "Winter", "order": 3},
+  {"id": "M_LANTERN", "type": "Motif", "label": "lantern"},
+  {"id": "E1", "type": "Event", "chapter": 1, "label": "unlit lantern", "evidence": "She does not light it."},
+  {"id": "E2", "type": "Event", "chapter": 2, "label": "folded away", "evidence": "I take it down and fold it into a drawer."},
+  {"id": "E3", "type": "Event", "chapter": 3, "label": "lit at last", "evidence": "I light it for the first time."}
+ ],
+ "edges": [
+  {"source": "E1", "relation": "OCCURS_IN", "target": "CH1"},
+  {"source": "E2", "relation": "OCCURS_IN", "target": "CH2"},
+  {"source": "E3", "relation": "OCCURS_IN", "target": "CH3"},
+  {"source": "E1", "relation": "EMBODIES", "target": "T0"},
+  {"source": "E1", "relation": "USES_MOTIF", "target": "M_LANTERN"},
+  {"source": "E1", "relation": "SETS_UP", "target": "E3"},
+  {"source": "E2", "relation": "SETS_UP", "target": "E3"},
+  {"source": "E1", "relation": "RHYMES_WITH", "target": "E2"}
+ ]
+}

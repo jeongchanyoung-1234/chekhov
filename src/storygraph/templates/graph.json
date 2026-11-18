@@ -1,0 +1,22 @@
+{
+ "meta": {
+  "title": "{{TITLE}}",
+  "language": "{{LANG}}",
+  "chapter_pattern": "^\\[(\\d+)\\]",
+  "rule_packs": [],
+  "based_on": "",
+  "purpose": "Keep the manuscript consistent with its themes, persona, motifs, setups and payoffs. Read the invariants before editing; run `storygraph check` after."
+ },
+ "invariants": [
+  {
+   "id": "I-EXAMPLE",
+   "kind": "persona",
+   "chapters": "all",
+   "rule": "Write each rule of the work as a sentence a person (or an agent) can follow. Add a `check` only when a machine can see it.",
+   "check": {"type": "watch_terms", "terms": [], "level": "warning"}
+  }
+ ],
+ "facts": [],
+ "nodes": [],
+ "edges": []
+}
