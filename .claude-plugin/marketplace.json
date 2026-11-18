@@ -1,11 +1,11 @@
 {
-  "name": "storygraph",
+  "name": "chekhov",
   "owner": {
     "name": "jeongchanyoung-1234"
   },
   "plugins": [
     {
-      "name": "storygraph",
+      "name": "chekhov",
       "source": "./plugin",
       "description": "Revise fiction with an agent that keeps the manuscript consistent with a semantic graph of the work: build the graph, read-through, revise chapter by chapter, abridge, and log feedback."
     }

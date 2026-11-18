@@ -81,4 +81,4 @@ Default:
 
 ## exclusion files
 
-Plain text, one node id per line, `#` comments allowed. Pass with `--exclude`. Use one per abridged edition; `storygraph impact --write-exclusions` can create it.
+Plain text, one node id per line, `#` comments allowed. Pass with `--exclude`. Use one per abridged edition; `chekhov impact --write-exclusions` can create it.

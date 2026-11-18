@@ -8,9 +8,9 @@ Rules an AI agent (and any human collaborator) follows when working on this manu
    - Report anything you did not apply, or applied differently, with the reason.
 
 2. **Read the invariants in `graph.json` before editing. After editing, update the graph and run the check.**
-   - `storygraph check graph.json manuscript.docx`
+   - `chekhov check graph.json manuscript.docx`
    - When a scene changes, update its Event `evidence` (the sentence from the manuscript) and its edges.
-   - When a scene is cut, run `storygraph impact` and re-read every setup or echo that lost its partner: does it still stand?
+   - When a scene is cut, run `chekhov impact` and re-read every setup or echo that lost its partner: does it still stand?
 
 3. **Never edit the original.**
    - Save working versions under new numbered names. When a version is final, keep only the new final version and the original.

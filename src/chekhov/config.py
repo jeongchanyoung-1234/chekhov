@@ -1,4 +1,4 @@
-"""Project config: `.storygraph.json` in the work's folder (or any parent).
+"""Project config: `.chekhov.json` in the work's folder (or any parent).
 
     {
      "graph": "graph.json",
@@ -10,7 +10,7 @@
      }
     }
 
-Paths are relative to the config file. With a config, `storygraph check` needs no arguments.
+Paths are relative to the config file. With a config, `chekhov check` needs no arguments.
 """
 from __future__ import annotations
 
@@ -18,8 +18,8 @@ import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
-CONFIG_NAME = ".storygraph.json"
-STATE_DIR = ".storygraph"
+CONFIG_NAME = ".chekhov.json"
+STATE_DIR = ".chekhov"
 
 
 @dataclass

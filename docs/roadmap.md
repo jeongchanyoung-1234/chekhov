@@ -14,9 +14,9 @@ Repository, MIT license, graph format v0.1, packaging, tests.
 - [ ] CI (GitHub Actions) on Windows, macOS, Linux
 
 ## M2 · Claude Code plugin (v0.1 done, to field-test)
-- [x] `.storygraph.json` project config with named editions; `check`/`impact` without arguments
-- [x] `storygraph hook`: checks only on change, exit 2 shows errors to the agent, warns on Word lock files
-- [x] skills: `storygraph-setup`, `read-through`, `revise-chapter`, `abridge`, `log-round`
+- [x] `.chekhov.json` project config with named editions; `check`/`impact` without arguments
+- [x] `chekhov hook`: checks only on change, exit 2 shows errors to the agent, warns on Word lock files
+- [x] skills: `chekhov-setup`, `read-through`, `revise-chapter`, `abridge`, `log-round`
 - [x] marketplace entry at the repo root
 - [ ] field test on a full revision cycle with a public-domain story; tune the skills from what goes wrong
 - [ ] `init --agent claude` writes `CLAUDE.md` directly

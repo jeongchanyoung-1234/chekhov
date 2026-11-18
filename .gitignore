@@ -8,6 +8,6 @@ build/
 # Word lock files
 ~$*
 # hook state
-.storygraph/
+.chekhov/
 # keep private manuscripts out of the repo
 private/

@@ -1,4 +1,4 @@
-"""Command line: storygraph check | impact | audit | count | stats | init | hook"""
+"""Command line: chekhov check | impact | audit | count | stats | init | hook"""
 from __future__ import annotations
 
 import argparse
@@ -24,12 +24,12 @@ def _utf8_stdout() -> None:
 
 
 def _resolve(a) -> None:
-    """Fill graph/manuscript/exclude/pack from .storygraph.json when not given."""
+    """Fill graph/manuscript/exclude/pack from .chekhov.json when not given."""
     if a.graph and a.manuscript and not getattr(a, "edition", None):
         return
     cfg = find_config()
     if not cfg:
-        raise SystemExit("give GRAPH and MANUSCRIPT, or create .storygraph.json (see docs/schema.md)")
+        raise SystemExit("give GRAPH and MANUSCRIPT, or create .chekhov.json (see docs/schema.md)")
     project = load_project(cfg, getattr(a, "edition", None))
     a.graph = a.graph or str(project.graph)
     a.manuscript = a.manuscript or str(project.manuscript)
@@ -146,7 +146,7 @@ def cmd_stats(a) -> int:
 def cmd_init(a) -> int:
     target = Path(a.directory)
     target.mkdir(parents=True, exist_ok=True)
-    tpl = resources.files("storygraph") / "templates"
+    tpl = resources.files("chekhov") / "templates"
     lang = a.language
     files = {
         "graph.json": "graph.json",
@@ -161,7 +161,7 @@ def cmd_init(a) -> int:
         text = (tpl / src).read_text(encoding="utf-8").replace("{{TITLE}}", a.title).replace("{{LANG}}", lang)
         dest.write_text(text, encoding="utf-8")
         print(f"wrote {dest}")
-    cfg = target / ".storygraph.json"
+    cfg = target / ".chekhov.json"
     if not cfg.exists() or a.force:
         cfg.write_text(json.dumps({"graph": "graph.json", "manuscript": a.manuscript, "exclude": None,
                                    "packs": []}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
@@ -170,14 +170,14 @@ def cmd_init(a) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="storygraph", description=__doc__)
-    p.add_argument("--version", action="version", version=f"storygraph {__version__}")
+    p = argparse.ArgumentParser(prog="chekhov", description=__doc__)
+    p.add_argument("--version", action="version", version=f"chekhov {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
     def common(sp):
-        sp.add_argument("graph", nargs="?", help="graph JSON (default: from .storygraph.json)")
-        sp.add_argument("manuscript", nargs="?", help=".docx, .md or .txt (default: from .storygraph.json)")
-        sp.add_argument("--edition", help="named edition in .storygraph.json (e.g. an abridged version)")
+        sp.add_argument("graph", nargs="?", help="graph JSON (default: from .chekhov.json)")
+        sp.add_argument("manuscript", nargs="?", help=".docx, .md or .txt (default: from .chekhov.json)")
+        sp.add_argument("--edition", help="named edition in .chekhov.json (e.g. an abridged version)")
         sp.add_argument("--chapter-pattern", help=r"regex for chapter headings, group 1 = number (default ^\[(\d+)\])")
         sp.add_argument("--json", action="store_true")
 

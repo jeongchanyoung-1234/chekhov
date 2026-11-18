@@ -3,11 +3,11 @@ from pathlib import Path
 
 import pytest
 
-from storygraph import checks, impact, metrics
-from storygraph.checks.rules import parse_chapters
-from storygraph.cli import main
-from storygraph.manuscript import Manuscript, split_sentences
-from storygraph.model import Graph
+from chekhov import checks, impact, metrics
+from chekhov.checks.rules import parse_chapters
+from chekhov.cli import main
+from chekhov.manuscript import Manuscript, split_sentences
+from chekhov.model import Graph
 
 FIX = Path(__file__).parent / "fixtures"
 
@@ -56,7 +56,7 @@ def test_changed_and_missing_evidence(graph):
 
 
 def test_similarity_separates_edits_from_strangers():
-    from storygraph.checks.evidence import similarity
+    from chekhov.checks.evidence import similarity
     assert similarity("발소리도 멀어지지 않는다.", "발소리는 멀어지지 않는다.") >= 0.7      # a real edit
     assert similarity("할아버지가 그러셨다고 한다.",
                       "아버지가 신문을 내려놓고 이름을 부르시면 그제야 울면서 한 숟가락을 삼킨다.") < 0.7  # unrelated
@@ -133,7 +133,7 @@ def _project(tmp_path):
     import shutil
     shutil.copy(FIX / "graph.json", tmp_path / "graph.json")
     shutil.copy(FIX / "story.md", tmp_path / "story.md")
-    (tmp_path / ".storygraph.json").write_text(
+    (tmp_path / ".chekhov.json").write_text(
         json.dumps({"graph": "graph.json", "manuscript": "story.md"}), encoding="utf-8")
     return tmp_path
 
@@ -144,7 +144,7 @@ def test_check_reads_config(tmp_path, monkeypatch, capsys):
 
 
 def test_hook_runs_only_on_change_and_blocks_on_errors(tmp_path, capsys):
-    from storygraph import hook
+    from chekhov import hook
     root = _project(tmp_path)
     event = json.dumps({"cwd": str(root), "tool_name": "Edit"})
     assert hook.run(event) == 0                      # clean
@@ -157,5 +157,5 @@ def test_hook_runs_only_on_change_and_blocks_on_errors(tmp_path, capsys):
 
 
 def test_hook_without_project_is_silent(tmp_path):
-    from storygraph import hook
+    from chekhov import hook
     assert hook.run(json.dumps({"cwd": str(tmp_path)})) == 0

@@ -1,6 +1,6 @@
 """Agent hook: run `check` after a tool call, only when the graph or manuscript changed.
 
-Claude Code calls `storygraph hook` after Edit/Write/Bash (see plugin/hooks/hooks.json)
+Claude Code calls `chekhov hook` after Edit/Write/Bash (see plugin/hooks/hooks.json)
 and passes the tool call as JSON on stdin. Exit codes follow Claude Code's hook contract:
   0  nothing to say (no project, nothing changed, or no errors)
   2  errors found; stderr is shown to the agent so it fixes them before moving on
@@ -61,17 +61,17 @@ def run(stdin_text: str = "") -> int:
     state_file.write_text(json.dumps({"mtimes": now, "errors": len(errors)}), encoding="utf-8")
 
     if _word_lock(project.manuscript).exists():
-        print(f"storygraph: {project.manuscript.name} is open in Word; saves from scripts may fail "
+        print(f"chekhov: {project.manuscript.name} is open in Word; saves from scripts may fail "
               f"until the author closes it.", file=sys.stderr)
     if not errors:
         return 0
-    print(f"storygraph: {len(errors)} error(s) between {project.graph.name} and {project.manuscript.name}. "
+    print(f"chekhov: {len(errors)} error(s) between {project.graph.name} and {project.manuscript.name}. "
           f"Fix the graph (evidence/edges) or the manuscript, or list deliberate cuts in the exclusion file.",
           file=sys.stderr)
     for i in errors[:MAX_LINES]:
         print(str(i), file=sys.stderr)
     if len(errors) > MAX_LINES:
-        print(f"  … {len(errors) - MAX_LINES} more: run `storygraph check`", file=sys.stderr)
+        print(f"  … {len(errors) - MAX_LINES} more: run `chekhov check`", file=sys.stderr)
     return 2
 
 
@@ -79,8 +79,8 @@ def main() -> int:
     try:
         return run(sys.stdin.read() if not sys.stdin.isatty() else "")
     except SystemExit as e:
-        print(f"storygraph hook: {e}", file=sys.stderr)
+        print(f"chekhov hook: {e}", file=sys.stderr)
         return 1
     except Exception as e:  # never break the agent's session because of the hook
-        print(f"storygraph hook failed: {e!r}", file=sys.stderr)
+        print(f"chekhov hook failed: {e!r}", file=sys.stderr)
         return 1

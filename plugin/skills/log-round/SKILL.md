@@ -21,5 +21,5 @@ description: Record a feedback round in FEEDBACK_LOG.md - merge new craft princi
 작가가 잡아낸 내 잘못과, 내가 스스로 발견한 잘못을 이름 붙여 적는다(예: "설계를 증명하려는 문장", "끼워 넣기만 하고 호흡은 그대로", "작가만 아는 운"). 무엇을 했고, 어떤 원칙이 막는지.
 
 ## 확인
-- 그래프를 고쳤다면 `storygraph check` 오류 0건인지.
+- 그래프를 고쳤다면 `chekhov check` 오류 0건인지.
 - 작가에게 보고할 때 로그를 갱신했다고 알린다.

@@ -3,13 +3,13 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "storygraph"
+name = "chekhov"
 version = "0.1.0"
 description = "Keep a manuscript consistent with a semantic graph of its themes, persona, motifs, setups and payoffs."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-authors = [{ name = "storygraph contributors" }]
+authors = [{ name = "chekhov contributors" }]
 keywords = ["fiction", "writing", "manuscript", "semantic-graph", "consistency", "llm-agent"]
 classifiers = [
   "Programming Language :: Python :: 3",
@@ -24,10 +24,10 @@ dependencies = ["python-docx>=1.1"]
 dev = ["pytest>=8"]
 
 [project.scripts]
-storygraph = "storygraph.cli:main"
+chekhov = "chekhov.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/storygraph"]
+packages = ["src/chekhov"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

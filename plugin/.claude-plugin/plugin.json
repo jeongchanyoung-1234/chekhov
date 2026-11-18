@@ -1,12 +1,12 @@
 {
-  "name": "storygraph",
+  "name": "chekhov",
   "version": "0.1.0",
   "description": "Revise fiction with an agent that keeps the manuscript consistent with a semantic graph of the work.",
   "author": {
-    "name": "storygraph contributors"
+    "name": "chekhov contributors"
   },
-  "homepage": "https://github.com/jeongchanyoung-1234/storygraph",
-  "repository": "https://github.com/jeongchanyoung-1234/storygraph",
+  "homepage": "https://github.com/jeongchanyoung-1234/chekhov",
+  "repository": "https://github.com/jeongchanyoung-1234/chekhov",
   "license": "MIT",
   "keywords": ["fiction", "writing", "revision", "semantic-graph", "korean"]
 }

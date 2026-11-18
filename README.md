@@ -1,9 +1,13 @@
-# storygraph
+# chekhov
 
 **Keep a manuscript consistent with a semantic graph of the work.**
+
+> *If in the first act you have hung a pistol on the wall, then in the following one it should be fired.* (Anton Chekhov)
+>
+> chekhov keeps track of the pistols: every setup, every echo, every rule of the work, anchored to sentences in the manuscript.
 [한국어 README](README.ko.md)
 
-When you revise fiction with an AI agent, the agent forgets. It rewrites a sentence that was quietly setting up the ending, cuts a scene whose echo comes six chapters later, or lets the narrator start naming feelings he was never supposed to name. storygraph gives the work a memory that both you and the agent can check:
+When you revise fiction with an AI agent, the agent forgets. It rewrites a sentence that was quietly setting up the ending, cuts a scene whose echo comes six chapters later, or lets the narrator start naming feelings he was never supposed to name. chekhov gives the work a memory that both you and the agent can check:
 
 - a **graph** of the work: themes, chapters, characters, persona traits, motifs, and scenes. Each scene is anchored to a sentence copied from the manuscript. Setups point at payoffs (`SETS_UP`), echoes point at echoes (`RHYMES_WITH`), and the rules of the work are written down as **invariants**.
 - a **checker** with no LLM inside, so the same input always gives the same result. It tells you when the manuscript and the graph disagree.
@@ -14,7 +18,7 @@ It grew out of revising one Korean short story through 50+ rounds with Claude Co
 ## Install
 
 ```bash
-pip install git+https://github.com/<owner>/storygraph   # until it is on PyPI
+pip install git+https://github.com/<owner>/chekhov   # until it is on PyPI
 ```
 
 Python 3.10+. Manuscripts can be `.docx`, `.md` or `.txt`. Chapters are found by a heading pattern (default `[1] Title`, configurable).
@@ -22,11 +26,11 @@ Python 3.10+. Manuscripts can be `.docx`, `.md` or `.txt`. Chapters are found by
 ## Commands
 
 ```bash
-storygraph init my-novel --title "My Novel" --language en   # graph skeleton, agent rules, feedback log
-storygraph check graph.json draft.docx                      # graph vs manuscript
-storygraph impact graph.json abridged.docx                  # what a cut breaks
-storygraph audit draft.docx                                 # paragraph/sentence rhythm per chapter
-storygraph count draft.docx                                 # characters and 200-char manuscript pages
+chekhov init my-novel --title "My Novel" --language en   # graph skeleton, agent rules, feedback log
+chekhov check graph.json draft.docx                      # graph vs manuscript
+chekhov impact graph.json abridged.docx                  # what a cut breaks
+chekhov audit draft.docx                                 # paragraph/sentence rhythm per chapter
+chekhov count draft.docx                                 # characters and 200-char manuscript pages
 ```
 
 ### `check`
@@ -52,7 +56,7 @@ See [docs/schema.md](docs/schema.md). It is intentionally loose: any node needs 
 
 ## Working with an agent
 
-`storygraph init` writes `AGENT_RULES.md` (save it as `CLAUDE.md` or `AGENTS.md`) and `FEEDBACK_LOG.md`. The rules that made the difference:
+`chekhov init` writes `AGENT_RULES.md` (save it as `CLAUDE.md` or `AGENTS.md`) and `FEEDBACK_LOG.md`. The rules that made the difference:
 
 1. Review every change critically, whoever suggested it, and report what was not applied and why.
 2. Read the invariants before editing; update the graph and run `check` after.
@@ -63,23 +67,23 @@ See [docs/schema.md](docs/schema.md). It is intentionally loose: any node needs 
 ### Claude Code plugin
 
 ```text
-/plugin marketplace add jeongchanyoung-1234/storygraph
-/plugin install storygraph@storygraph
+/plugin marketplace add jeongchanyoung-1234/chekhov
+/plugin install chekhov@chekhov
 ```
 
-The `storygraph` command must be on your PATH (install it first, above).
+The `chekhov` command must be on your PATH (install it first, above).
 
 | skill | what the agent does |
 |---|---|
-| `storygraph-setup` | asks you about intent, drafts the graph from the manuscript, checks it to zero errors, and shows you every interpretation it made |
+| `chekhov-setup` | asks you about intent, drafts the graph from the manuscript, checks it to zero errors, and shows you every interpretation it made |
 | `read-through` | reviews the whole manuscript against the graph and log, **without editing**, and ends with "apply?" |
 | `revise-chapter` | revises one chapter at a time on a working copy, reviews every change critically, keeps the graph in sync |
 | `abridge` | makes a shorter edition by cutting whole scenes, then re-reads every setup or echo the cut left alone |
 | `log-round` | records the round: principles, work record, its own mistakes |
 
-A `PostToolUse` hook runs `storygraph hook` after edits. It checks only when the graph or manuscript changed, and when the two disagree it shows the errors to the agent so they are fixed before moving on. It also warns when the manuscript is open in Word.
+A `PostToolUse` hook runs `chekhov hook` after edits. It checks only when the graph or manuscript changed, and when the two disagree it shows the errors to the agent so they are fixed before moving on. It also warns when the manuscript is open in Word.
 
-Put a `.storygraph.json` in the work's folder (`storygraph init` writes one) so the hook and `storygraph check` know which files to use:
+Put a `.chekhov.json` in the work's folder (`chekhov init` writes one) so the hook and `chekhov check` know which files to use:
 
 ```json
 {"graph": "graph.json", "manuscript": "drafts/v0.2_work1.docx", "exclude": null, "packs": ["ko/emotion-words"],

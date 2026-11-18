@@ -10,7 +10,7 @@ description: Read the whole manuscript and review it for literary quality, reada
 ## 읽기 전에
 - `FEEDBACK_LOG.md` 1부(원칙)와 2부 "다음에 정할 것"을 읽는다.
 - `graph.json`의 invariants를 읽는다.
-- `storygraph check`(오류가 있으면 먼저 보고)와 `storygraph audit`(장별 호흡 수치)를 돌린다. 수치는 읽을 곳을 고르는 데만 쓴다. 판정은 사람이 읽고 한다.
+- `chekhov check`(오류가 있으면 먼저 보고)와 `chekhov audit`(장별 호흡 수치)를 돌린다. 수치는 읽을 곳을 고르는 데만 쓴다. 판정은 사람이 읽고 한다.
 
 ## 읽으며 볼 것
 1. **문학성**: 주제를 화자의 말로 진술하는 문장, 장치를 위한 장치, 예쁘지만 기능이 없는 문장, 장소의 일반적인 색.

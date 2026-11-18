@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "storygraph hook",
+            "command": "chekhov hook",
             "timeout": 60
           }
         ]
