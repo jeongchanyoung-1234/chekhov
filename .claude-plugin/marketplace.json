@@ -1,5 +1,6 @@
 {
   "name": "chekhov",
+  "description": "Tools for revising fiction with an AI agent while the author keeps every setup, echo and rule of the work in view.",
   "owner": {
     "name": "jeongchanyoung-1234"
   },
