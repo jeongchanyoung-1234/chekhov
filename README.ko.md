@@ -60,7 +60,33 @@ storygraph count 원고.docx                                # 글자 수와 200�
 4. 회차마다 원칙, 작업 기록, 에이전트 자신의 실수를 기록한다.
 5. 설계는 작가가 정한다. 설계를 증명하려고 문장을 끼워 넣지 않는다.
 
-다음 단계는 Claude Code 플러그인이다(그래프 만들기, 통독, 장 수정, 축약, 로그 기록 스킬과, 수정 뒤 `check`를 자동으로 돌리는 훅). [docs/roadmap.md](docs/roadmap.md) 참고.
+### Claude Code 플러그인
+
+```text
+/plugin marketplace add jeongchanyoung-1234/storygraph
+/plugin install storygraph@storygraph
+```
+
+`storygraph` 명령이 PATH에 있어야 한다(위의 설치 먼저).
+
+| 스킬 | 에이전트가 하는 일 |
+|---|---|
+| `storygraph-setup` | 작가에게 의도를 묻고, 원고에서 그래프 초안을 만들고, 오류 0건까지 검사하고, 자신이 해석해서 넣은 것을 따로 보여 준다 |
+| `read-through` | 그래프와 로그를 기준으로 원고 전체를 검토한다. **고치지 않고** "반영할까요?"로 끝낸다 |
+| `revise-chapter` | 작업본에서 장 단위로 고치고, 수정마다 비판적으로 검토하고, 그래프를 맞춘다 |
+| `abridge` | 장면 단위로 덜어 축약판을 만들고, 짝을 잃은 복선·운을 하나씩 다시 읽는다 |
+| `log-round` | 회차를 기록한다: 원칙, 작업 기록, 자신의 실수 |
+
+`PostToolUse` 훅이 수정 뒤 `storygraph hook`을 돌린다. 그래프나 원고가 바뀌었을 때만 검사하고, 둘이 어긋나면 오류를 에이전트에게 보여 줘서 다음으로 넘어가기 전에 고치게 한다. 원고가 Word에 열려 있으면 경고한다.
+
+작품 폴더에 `.storygraph.json`을 두면(`storygraph init`이 만든다) 훅과 `storygraph check`가 어느 파일을 볼지 안다.
+
+```json
+{"graph": "graph.json", "manuscript": "drafts/v0.2_작업1.docx", "exclude": null, "packs": ["ko/emotion-words"],
+ "editions": {"공모80": {"manuscript": "공모판_80매.docx", "exclude": "공모판_80매_제외.txt"}}}
+```
+
+다음 계획은 [docs/roadmap.md](docs/roadmap.md) 참고.
 
 ## 라이선스
 

@@ -7,5 +7,7 @@ build/
 .pytest_cache/
 # Word lock files
 ~$*
+# hook state
+.storygraph/
 # keep private manuscripts out of the repo
 private/

@@ -1,4 +1,4 @@
-"""Command line: storygraph check | impact | audit | count | stats | init"""
+"""Command line: storygraph check | impact | audit | count | stats | init | hook"""
 from __future__ import annotations
 
 import argparse
@@ -9,15 +9,34 @@ from dataclasses import asdict
 from importlib import resources
 from pathlib import Path
 
-from . import __version__, checks, impact, metrics
+from . import __version__, checks, hook, impact, metrics
+from .config import find_config, load_project
 from .issues import ERROR, INFO, WARNING
 from .manuscript import Manuscript
 from .model import Graph
 
 
 def _utf8_stdout() -> None:
-    if hasattr(sys.stdout, "buffer") and (sys.stdout.encoding or "").lower() != "utf-8":
-        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+    for name in ("stdout", "stderr"):
+        stream = getattr(sys, name)
+        if hasattr(stream, "buffer") and (stream.encoding or "").lower() != "utf-8":
+            setattr(sys, name, io.TextIOWrapper(stream.buffer, encoding="utf-8"))
+
+
+def _resolve(a) -> None:
+    """Fill graph/manuscript/exclude/pack from .storygraph.json when not given."""
+    if a.graph and a.manuscript and not getattr(a, "edition", None):
+        return
+    cfg = find_config()
+    if not cfg:
+        raise SystemExit("give GRAPH and MANUSCRIPT, or create .storygraph.json (see docs/schema.md)")
+    project = load_project(cfg, getattr(a, "edition", None))
+    a.graph = a.graph or str(project.graph)
+    a.manuscript = a.manuscript or str(project.manuscript)
+    if hasattr(a, "exclude") and not a.exclude and project.exclude:
+        a.exclude = str(project.exclude)
+    if hasattr(a, "pack"):
+        a.pack = (a.pack or []) + project.packs
 
 
 def _load_excluded(path: str | None) -> set[str]:
@@ -38,6 +57,7 @@ def _manuscript(path: str, graph: Graph | None, pattern: str | None) -> Manuscri
 # ---- commands -------------------------------------------------------------
 
 def cmd_check(a) -> int:
+    _resolve(a)
     g = Graph.load(a.graph)
     ms = _manuscript(a.manuscript, g, a.chapter_pattern)
     issues = checks.run_all(g, ms, _load_excluded(a.exclude), a.pack)
@@ -59,6 +79,7 @@ def cmd_check(a) -> int:
 
 
 def cmd_impact(a) -> int:
+    _resolve(a)
     g = Graph.load(a.graph)
     if a.remove:
         removed = set(a.remove)
@@ -113,6 +134,10 @@ def cmd_count(a) -> int:
     return 0
 
 
+def cmd_hook(a) -> int:
+    return hook.main()
+
+
 def cmd_stats(a) -> int:
     print(json.dumps(Graph.load(a.graph).stats(), ensure_ascii=False, indent=1))
     return 0
@@ -136,6 +161,11 @@ def cmd_init(a) -> int:
         text = (tpl / src).read_text(encoding="utf-8").replace("{{TITLE}}", a.title).replace("{{LANG}}", lang)
         dest.write_text(text, encoding="utf-8")
         print(f"wrote {dest}")
+    cfg = target / ".storygraph.json"
+    if not cfg.exists() or a.force:
+        cfg.write_text(json.dumps({"graph": "graph.json", "manuscript": a.manuscript, "exclude": None,
+                                   "packs": []}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print(f"wrote {cfg}  (point 'manuscript' at your working copy)")
     return 0
 
 
@@ -144,10 +174,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--version", action="version", version=f"storygraph {__version__}")
     sub = p.add_subparsers(dest="command", required=True)
 
-    def common(sp, graph_required=True):
-        if graph_required:
-            sp.add_argument("graph", help="graph JSON")
-        sp.add_argument("manuscript", help=".docx, .md or .txt")
+    def common(sp):
+        sp.add_argument("graph", nargs="?", help="graph JSON (default: from .storygraph.json)")
+        sp.add_argument("manuscript", nargs="?", help=".docx, .md or .txt (default: from .storygraph.json)")
+        sp.add_argument("--edition", help="named edition in .storygraph.json (e.g. an abridged version)")
         sp.add_argument("--chapter-pattern", help=r"regex for chapter headings, group 1 = number (default ^\[(\d+)\])")
         sp.add_argument("--json", action="store_true")
 
@@ -177,6 +207,9 @@ def build_parser() -> argparse.ArgumentParser:
             sp.add_argument("--front-matter", action="store_true", help="also count text before the first chapter")
         sp.set_defaults(func=func)
 
+    sp = sub.add_parser("hook", help="for agent hooks: check only if files changed; exit 2 on errors")
+    sp.set_defaults(func=cmd_hook)
+
     sp = sub.add_parser("stats", help="node and edge counts")
     sp.add_argument("graph")
     sp.set_defaults(func=cmd_stats)
@@ -185,6 +218,7 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("directory")
     sp.add_argument("--title", default="Untitled")
     sp.add_argument("--language", default="ko", choices=["ko", "en"])
+    sp.add_argument("--manuscript", default="manuscript.docx", help="working copy, relative to the directory")
     sp.add_argument("--force", action="store_true")
     sp.set_defaults(func=cmd_init)
     return p

@@ -13,10 +13,13 @@ Repository, MIT license, graph format v0.1, packaging, tests.
 - [ ] JSON Schema file for editor validation
 - [ ] CI (GitHub Actions) on Windows, macOS, Linux
 
-## M2 · Claude Code plugin
-- skills: `build-graph` (agent reads the manuscript and drafts the graph; `check` must pass before it is saved), `read-through`, `revise-chapter`, `abridge` (target length → cut plan → `impact` → re-read survivors), `log-round`
-- hook: after an edit to the manuscript, run `storygraph check` and show errors to the agent
-- templates wired into `init --agent claude`
+## M2 · Claude Code plugin (v0.1 done, to field-test)
+- [x] `.storygraph.json` project config with named editions; `check`/`impact` without arguments
+- [x] `storygraph hook`: checks only on change, exit 2 shows errors to the agent, warns on Word lock files
+- [x] skills: `storygraph-setup`, `read-through`, `revise-chapter`, `abridge`, `log-round`
+- [x] marketplace entry at the repo root
+- [ ] field test on a full revision cycle with a public-domain story; tune the skills from what goes wrong
+- [ ] `init --agent claude` writes `CLAUDE.md` directly
 
 ## M3 · MCP server and docs
 - tools: query nodes, check, impact, count, so any MCP client can use the graph

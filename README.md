@@ -60,7 +60,33 @@ See [docs/schema.md](docs/schema.md). It is intentionally loose: any node needs 
 4. Log every round: principles, the work record, and the agent's own mistakes.
 5. The author decides the design. Never insert a sentence just to prove a design.
 
-A Claude Code plugin (skills for building the graph, read-throughs, chapter revision, abridging, and logging, plus a hook that runs `check` after edits) is the next milestone. See [docs/roadmap.md](docs/roadmap.md).
+### Claude Code plugin
+
+```text
+/plugin marketplace add jeongchanyoung-1234/storygraph
+/plugin install storygraph@storygraph
+```
+
+The `storygraph` command must be on your PATH (install it first, above).
+
+| skill | what the agent does |
+|---|---|
+| `storygraph-setup` | asks you about intent, drafts the graph from the manuscript, checks it to zero errors, and shows you every interpretation it made |
+| `read-through` | reviews the whole manuscript against the graph and log, **without editing**, and ends with "apply?" |
+| `revise-chapter` | revises one chapter at a time on a working copy, reviews every change critically, keeps the graph in sync |
+| `abridge` | makes a shorter edition by cutting whole scenes, then re-reads every setup or echo the cut left alone |
+| `log-round` | records the round: principles, work record, its own mistakes |
+
+A `PostToolUse` hook runs `storygraph hook` after edits. It checks only when the graph or manuscript changed, and when the two disagree it shows the errors to the agent so they are fixed before moving on. It also warns when the manuscript is open in Word.
+
+Put a `.storygraph.json` in the work's folder (`storygraph init` writes one) so the hook and `storygraph check` know which files to use:
+
+```json
+{"graph": "graph.json", "manuscript": "drafts/v0.2_work1.docx", "exclude": null, "packs": ["ko/emotion-words"],
+ "editions": {"contest80": {"manuscript": "contest_80.docx", "exclude": "contest_80_cut.txt"}}}
+```
+
+See [docs/roadmap.md](docs/roadmap.md) for what is next.
 
 ## License
 

@@ -127,3 +127,35 @@ def test_cli_init(tmp_path):
     g = json.loads((tmp_path / "work" / "graph.json").read_text(encoding="utf-8"))
     assert g["meta"]["title"] == "Test"
     assert (tmp_path / "work" / "AGENT_RULES.md").exists()
+
+
+def _project(tmp_path):
+    import shutil
+    shutil.copy(FIX / "graph.json", tmp_path / "graph.json")
+    shutil.copy(FIX / "story.md", tmp_path / "story.md")
+    (tmp_path / ".storygraph.json").write_text(
+        json.dumps({"graph": "graph.json", "manuscript": "story.md"}), encoding="utf-8")
+    return tmp_path
+
+
+def test_check_reads_config(tmp_path, monkeypatch, capsys):
+    monkeypatch.chdir(_project(tmp_path))
+    assert main(["check", "--json"]) == 0
+
+
+def test_hook_runs_only_on_change_and_blocks_on_errors(tmp_path, capsys):
+    from storygraph import hook
+    root = _project(tmp_path)
+    event = json.dumps({"cwd": str(root), "tool_name": "Edit"})
+    assert hook.run(event) == 0                      # clean
+    story = root / "story.md"
+    story.write_text(story.read_text(encoding="utf-8").replace("She does not light it.", "She lights it."),
+                     encoding="utf-8")
+    assert hook.run(event) == 2                      # evidence for E1 is gone
+    assert "E1" in capsys.readouterr().err
+    assert hook.run(event) == 0                      # nothing changed since the last run
+
+
+def test_hook_without_project_is_silent(tmp_path):
+    from storygraph import hook
+    assert hook.run(json.dumps({"cwd": str(tmp_path)})) == 0
