@@ -1,8 +1,11 @@
 """Korean prose conventions (opt-in). All are warnings: a person decides.
 
   ko/emotion-words     emotion and like/dislike words in narration (for restrained, show-don't-tell styles)
-  ko/metaphor-markers  simile markers (처럼, 같았다, 것 같다, 듯) so each metaphor is a choice
+  ko/simile-markers    similes (처럼, 마치, ~듯이) so each comparison is a choice
+  ko/hedge-markers     conjecture (것 같다, ~듯하다, ~듯싶다, 모양이다) for narrators who should not guess aloud
   ko/sino-numerals     Sino-Korean numbers and clock times written in hangul (for works that use Arabic numerals)
+
+  ko/metaphor-markers  = simile-markers + hedge-markers (kept for older configs)
 """
 from __future__ import annotations
 
@@ -13,7 +16,10 @@ from ..manuscript import Manuscript
 
 EMOTION_WORDS = ["우울", "상처", "죄책감", "절망", "트라우마", "외로", "슬펐", "슬프", "불안", "고독", "서운",
                  "두렵", "두려", "무서", "싫다", "좋다", "좋아한다", "재미있", "즐겁", "행복", "부끄"]
-METAPHOR_MARKERS = ["처럼", "같았다", "것 같다", "듯"]
+# '듯' inside ordinary words (반듯이, 번듯하다) is not a marker
+_NOT_DEUT = r"(?<![반번])"
+SIMILE = re.compile(r"처럼|마치|" + _NOT_DEUT + r"듯이")
+HEDGE = re.compile(r"것 같[다았은아]|" + _NOT_DEUT + r"듯(?:하|싶|한)|모양이[다었]")
 
 _SINO = r"(?:[일이삼사오육칠팔구]?백)?(?:[일이삼사오육칠팔구]?십)?[일이삼사오육칠팔구]?"
 _SINO_COUNTER = re.compile(r"(?<![가-힣])(" + _SINO + r") ?(분|초|평|층|년|학년|월|미터|명|등|교시)(?![가-힣])")
@@ -41,15 +47,21 @@ def emotion_words(ms: Manuscript) -> list[Issue]:
     return out
 
 
-def metaphor_markers(ms: Manuscript) -> list[Issue]:
+def _markers(ms: Manuscript, pattern: re.Pattern, code: str) -> list[Issue]:
     out = []
     for c in ms.chapter_numbers():
         for line in ms.chapters[c]:
-            for w in METAPHOR_MARKERS:
-                i = line.find(w)
-                if i >= 0:
-                    out.append(Issue(WARNING, "ko/metaphor-markers", f"'{w}': …{_ctx(line, i)}…", chapter=c))
+            for m in pattern.finditer(line):
+                out.append(Issue(WARNING, code, f"'{m.group(0)}': …{_ctx(line, m.start())}…", chapter=c))
     return out
+
+
+def simile_markers(ms: Manuscript) -> list[Issue]:
+    return _markers(ms, SIMILE, "ko/simile-markers")
+
+
+def hedge_markers(ms: Manuscript) -> list[Issue]:
+    return _markers(ms, HEDGE, "ko/hedge-markers")
 
 
 def sino_numerals(ms: Manuscript) -> list[Issue]:
@@ -69,6 +81,11 @@ def sino_numerals(ms: Manuscript) -> list[Issue]:
 
 RULES = {
     "emotion-words": emotion_words,
-    "metaphor-markers": metaphor_markers,
+    "simile-markers": simile_markers,
+    "hedge-markers": hedge_markers,
     "sino-numerals": sino_numerals,
+}
+
+ALIASES = {
+    "metaphor-markers": ["simile-markers", "hedge-markers"],
 }

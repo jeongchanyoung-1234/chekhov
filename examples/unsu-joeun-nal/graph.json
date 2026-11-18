@@ -1,0 +1,599 @@
+{
+ "meta": {
+  "title": "운수 좋은 날 (발췌)",
+  "language": "ko",
+  "chapter_pattern": "^\\[(\\d+)\\]",
+  "rule_packs": [],
+  "based_on": "story.md (현진건, 1924. 위키문헌 원문에서 네 대목을 발췌하고 [1]~[4] 제목을 붙임)",
+  "purpose": "chekhov 예제. 해석([해석])은 예시이며 작가의 의도로 확정된 것이 아니다."
+ },
+ "invariants": [
+  {
+   "id": "I-T1",
+   "kind": "theme",
+   "chapters": "all",
+   "rule": "운이 좋아질수록 불안이 함께 커진다. 행운의 장면에는 아내 쪽의 신호(기침, 부탁, 눈)가 따라온다."
+  },
+  {
+   "id": "I-P1",
+   "kind": "persona",
+   "chapters": "all",
+   "rule": "김 첨지는 아내에 대한 마음을 말로 하지 않는다. 욕과 행동(설렁탕)으로만 드러난다.",
+   "check": {
+    "type": "watch_terms",
+    "terms": [
+     "사랑",
+     "미안"
+    ]
+   }
+  },
+  {
+   "id": "I-S1",
+   "kind": "structure",
+   "chapters": "1-2",
+   "rule": "아내의 죽음은 마지막 대목에서 처음 확인된다. 그 전에는 신호와, 취중의 말로만 온다.",
+   "check": {
+    "type": "regex",
+    "pattern": "죽었",
+    "chapters": "1-2",
+    "level": "error",
+    "message": "죽음이 너무 일찍 말해진다"
+   }
+  }
+ ],
+ "facts": [
+  "첫번에 삼십 전, 둘째 번에 오십 전, 합해서 팔십 전.",
+  "개똥이는 세 살이다."
+ ],
+ "nodes": [
+  {
+   "id": "T0",
+   "type": "Theme",
+   "label": "운이 좋을수록 불안이 커진다",
+   "role": "반어의 축",
+   "note": "[해석] 제목과 결말이 서로를 뒤집는다."
+  },
+  {
+   "id": "T1",
+   "type": "Theme",
+   "label": "거친 말 밑의 애정",
+   "note": "[해석] 김 첨지는 아내를 욕하지만 번 돈의 쓸 곳은 처음부터 아내다."
+  },
+  {
+   "id": "T2",
+   "type": "Theme",
+   "label": "가난은 사랑을 늦게 도착하게 한다",
+   "note": "[해석] 설렁탕은 사 오지만 너무 늦다."
+  },
+  {
+   "id": "CH1",
+   "type": "Chapter",
+   "label": "[1] 운수 좋은 아침",
+   "order": 1
+  },
+  {
+   "id": "CH2",
+   "type": "Chapter",
+   "label": "[2] 정거장",
+   "order": 2
+  },
+  {
+   "id": "CH3",
+   "type": "Chapter",
+   "label": "[3] 선술집",
+   "order": 3
+  },
+  {
+   "id": "CH4",
+   "type": "Chapter",
+   "label": "[4] 설렁탕",
+   "order": 4
+  },
+  {
+   "id": "C_KIM",
+   "type": "Character",
+   "label": "김 첨지",
+   "desc": "동소문 안의 인력거꾼."
+  },
+  {
+   "id": "C_WIFE",
+   "type": "Character",
+   "label": "아내",
+   "desc": "한 달 넘게 앓는다. 설렁탕 국물을 원한다."
+  },
+  {
+   "id": "C_BABY",
+   "type": "Character",
+   "label": "개똥이",
+   "desc": "세 살."
+  },
+  {
+   "id": "C_CHISAM",
+   "type": "Character",
+   "label": "치삼",
+   "desc": "선술집에서 만난 친구."
+  },
+  {
+   "id": "P_ROUGH",
+   "type": "PersonaTrait",
+   "label": "애정을 욕과 행동으로만 드러낸다",
+   "desc": "'오라질 년'이라 부르면서 설렁탕을 산다."
+  },
+  {
+   "id": "P_BLUSTER",
+   "type": "PersonaTrait",
+   "label": "불안을 큰소리로 쫓는다",
+   "desc": "겁이 날수록 목소리가 커진다."
+  },
+  {
+   "id": "M_RAIN",
+   "type": "Motif",
+   "label": "얼다 만 비"
+  },
+  {
+   "id": "M_SOUP",
+   "type": "Motif",
+   "label": "설렁탕"
+  },
+  {
+   "id": "M_COUGH",
+   "type": "Motif",
+   "label": "기침 소리 / 그 부재"
+  },
+  {
+   "id": "M_EYES",
+   "type": "Motif",
+   "label": "아내의 눈"
+  },
+  {
+   "id": "M_LUCK",
+   "type": "Motif",
+   "label": "운수"
+  },
+  {
+   "id": "E1_1",
+   "type": "Event",
+   "label": "얼다 만 비",
+   "chapter": 1,
+   "evidence": "얼다가 만 비가 추적추적 내리었다."
+  },
+  {
+   "id": "E1_2",
+   "type": "Event",
+   "label": "오래간만의 운수 좋은 날",
+   "chapter": 1,
+   "evidence": "오래간만에도 닥친 운수 좋은 날이었다."
+  },
+  {
+   "id": "E1_3",
+   "type": "Event",
+   "label": "번 돈으로 아내에게 설렁탕을 사 줄 수 있다",
+   "chapter": 1,
+   "evidence": "앓는 아내에게 설렁탕 한 그릇도 사다줄 수 있음이다."
+  },
+  {
+   "id": "E1_4",
+   "type": "Event",
+   "label": "한 달 넘은 아내의 기침",
+   "chapter": 1,
+   "evidence": "그의 아내가 기침으로 쿨럭거리기는 벌써 달포가 넘었다."
+  },
+  {
+   "id": "E1_5",
+   "type": "Event",
+   "label": "아내를 때리고 자기 눈시울도 뜨거워진다",
+   "chapter": 1,
+   "evidence": "김 첨지의 눈시울도 뜨끈뜨끈하였다."
+  },
+  {
+   "id": "E1_6",
+   "type": "Event",
+   "label": "아내가 설렁탕 국물을 조른다",
+   "chapter": 1,
+   "evidence": "사흘 전부터 설렁탕 국물이 마시고 싶다고 남편을 졸랐다."
+  },
+  {
+   "id": "E1_7",
+   "type": "Event",
+   "label": "욕은 했지만 못 사 준 마음이 걸린다",
+   "chapter": 1,
+   "evidence": "못 사주는 마음이 시원치는 않았다."
+  },
+  {
+   "id": "E2_1",
+   "type": "Event",
+   "label": "이어지는 행운이 겁난다",
+   "chapter": 2,
+   "evidence": "이상하게도 꼬리를 맞물고 덤비는 이 행운 앞에 조금 겁이 났음이다."
+  },
+  {
+   "id": "E2_2",
+   "type": "Event",
+   "label": "오늘은 나가지 말라는 아내의 부탁",
+   "chapter": 2,
+   "evidence": "오늘은 나가지 말아요."
+  },
+  {
+   "id": "E2_3",
+   "type": "Event",
+   "label": "애걸하는 아내의 큰 눈",
+   "chapter": 2,
+   "evidence": "유달리 크고 움폭한 눈에 애걸하는 빛을 띠우며"
+  },
+  {
+   "id": "E2_4",
+   "type": "Event",
+   "label": "그러면 일찍 들어오라는 말",
+   "chapter": 2,
+   "evidence": "그러면 일찌기 들어와요."
+  },
+  {
+   "id": "E3_1",
+   "type": "Event",
+   "label": "웃다가 운다",
+   "chapter": 3,
+   "evidence": "김 첨지는 훌쩍훌쩍 울기 시작하였다."
+  },
+  {
+   "id": "E3_2",
+   "type": "Event",
+   "label": "취중에 아내가 죽었다고 말한다",
+   "chapter": 3,
+   "evidence": "우리 마누라가 죽었다네."
+  },
+  {
+   "id": "E3_3",
+   "type": "Event",
+   "label": "아내를 두고 술을 먹는 자신을 탓한다",
+   "chapter": 3,
+   "evidence": "내가 죽일 놈이야, 죽일 놈이야."
+  },
+  {
+   "id": "E4_1",
+   "type": "Event",
+   "label": "취중에도 설렁탕을 사 들고 온다",
+   "chapter": 4,
+   "evidence": "김 첨지는 취중에도 설렁탕을 사가지고 집에 다달았다."
+  },
+  {
+   "id": "E4_2",
+   "type": "Event",
+   "label": "기침 소리가 없다",
+   "chapter": 4,
+   "evidence": "쿨룩거리는 기침 소리도 들을 수 없다."
+  },
+  {
+   "id": "E4_3",
+   "type": "Event",
+   "label": "아이가 빈 젖을 빤다",
+   "chapter": 4,
+   "evidence": "빈 젖을 빤다는 것도 짐작할는지 모르리라."
+  },
+  {
+   "id": "E4_4",
+   "type": "Event",
+   "label": "고함은 두려움을 쫓으려는 허세",
+   "chapter": 4,
+   "evidence": "제 몸을 엄습해오는 무시무시한 증을 쫓아버리려는 허장성세(虛張聲勢)인 까닭이다."
+  },
+  {
+   "id": "E4_5",
+   "type": "Event",
+   "label": "천장만 보는 아내의 눈",
+   "chapter": 4,
+   "evidence": "왜 나를 바라보지 못하고 천정만 보느냐"
+  },
+  {
+   "id": "E4_6",
+   "type": "Event",
+   "label": "사 온 설렁탕을 먹지 못한다",
+   "chapter": 4,
+   "evidence": "설렁탕을 사다놓았는데 왜 먹지를 못하니"
+  },
+  {
+   "id": "E4_7",
+   "type": "Event",
+   "label": "운수가 좋더니만",
+   "chapter": 4,
+   "evidence": "괴상하게도 오늘은! 운수가 좋더니만"
+  }
+ ],
+ "edges": [
+  {
+   "source": "E1_1",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_2",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_3",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_4",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_5",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_6",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E1_7",
+   "relation": "OCCURS_IN",
+   "target": "CH1"
+  },
+  {
+   "source": "E2_1",
+   "relation": "OCCURS_IN",
+   "target": "CH2"
+  },
+  {
+   "source": "E2_2",
+   "relation": "OCCURS_IN",
+   "target": "CH2"
+  },
+  {
+   "source": "E2_3",
+   "relation": "OCCURS_IN",
+   "target": "CH2"
+  },
+  {
+   "source": "E2_4",
+   "relation": "OCCURS_IN",
+   "target": "CH2"
+  },
+  {
+   "source": "E3_1",
+   "relation": "OCCURS_IN",
+   "target": "CH3"
+  },
+  {
+   "source": "E3_2",
+   "relation": "OCCURS_IN",
+   "target": "CH3"
+  },
+  {
+   "source": "E3_3",
+   "relation": "OCCURS_IN",
+   "target": "CH3"
+  },
+  {
+   "source": "E4_1",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_2",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_3",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_4",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_5",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_6",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E4_7",
+   "relation": "OCCURS_IN",
+   "target": "CH4"
+  },
+  {
+   "source": "E1_2",
+   "relation": "EMBODIES",
+   "target": "T0"
+  },
+  {
+   "source": "E2_1",
+   "relation": "EMBODIES",
+   "target": "T0"
+  },
+  {
+   "source": "E4_7",
+   "relation": "EMBODIES",
+   "target": "T0"
+  },
+  {
+   "source": "E1_5",
+   "relation": "EMBODIES",
+   "target": "T1"
+  },
+  {
+   "source": "E1_7",
+   "relation": "EMBODIES",
+   "target": "T1"
+  },
+  {
+   "source": "E4_1",
+   "relation": "EMBODIES",
+   "target": "T1"
+  },
+  {
+   "source": "E3_3",
+   "relation": "EMBODIES",
+   "target": "T1"
+  },
+  {
+   "source": "E4_6",
+   "relation": "EMBODIES",
+   "target": "T2"
+  },
+  {
+   "source": "E1_3",
+   "relation": "EMBODIES",
+   "target": "T2"
+  },
+  {
+   "source": "E1_5",
+   "relation": "SHOWS_TRAIT",
+   "target": "P_ROUGH"
+  },
+  {
+   "source": "E1_7",
+   "relation": "SHOWS_TRAIT",
+   "target": "P_ROUGH"
+  },
+  {
+   "source": "E4_1",
+   "relation": "SHOWS_TRAIT",
+   "target": "P_ROUGH"
+  },
+  {
+   "source": "E4_4",
+   "relation": "SHOWS_TRAIT",
+   "target": "P_BLUSTER"
+  },
+  {
+   "source": "E3_2",
+   "relation": "SHOWS_TRAIT",
+   "target": "P_BLUSTER"
+  },
+  {
+   "source": "E1_1",
+   "relation": "USES_MOTIF",
+   "target": "M_RAIN"
+  },
+  {
+   "source": "E1_3",
+   "relation": "USES_MOTIF",
+   "target": "M_SOUP"
+  },
+  {
+   "source": "E1_6",
+   "relation": "USES_MOTIF",
+   "target": "M_SOUP"
+  },
+  {
+   "source": "E4_1",
+   "relation": "USES_MOTIF",
+   "target": "M_SOUP"
+  },
+  {
+   "source": "E4_6",
+   "relation": "USES_MOTIF",
+   "target": "M_SOUP"
+  },
+  {
+   "source": "E1_4",
+   "relation": "USES_MOTIF",
+   "target": "M_COUGH"
+  },
+  {
+   "source": "E4_2",
+   "relation": "USES_MOTIF",
+   "target": "M_COUGH"
+  },
+  {
+   "source": "E2_3",
+   "relation": "USES_MOTIF",
+   "target": "M_EYES"
+  },
+  {
+   "source": "E4_5",
+   "relation": "USES_MOTIF",
+   "target": "M_EYES"
+  },
+  {
+   "source": "E1_2",
+   "relation": "USES_MOTIF",
+   "target": "M_LUCK"
+  },
+  {
+   "source": "E4_7",
+   "relation": "USES_MOTIF",
+   "target": "M_LUCK"
+  },
+  {
+   "source": "E1_6",
+   "relation": "SETS_UP",
+   "target": "E4_6",
+   "note": "조르던 설렁탕 국물 → 사 왔지만 먹지 못한다"
+  },
+  {
+   "source": "E1_3",
+   "relation": "SETS_UP",
+   "target": "E4_1",
+   "note": "번 돈의 쓸 곳 → 취해서도 설렁탕만은 사 온다"
+  },
+  {
+   "source": "E1_2",
+   "relation": "SETS_UP",
+   "target": "E4_7",
+   "note": "제목의 '운수 좋은 날' → 마지막 말에서 뒤집힌다"
+  },
+  {
+   "source": "E2_2",
+   "relation": "SETS_UP",
+   "target": "E4_5",
+   "note": "나가지 말라는 부탁 → 돌아왔을 때 아내는 남편을 보지 못한다"
+  },
+  {
+   "source": "E2_4",
+   "relation": "SETS_UP",
+   "target": "E4_1",
+   "note": "일찍 들어오라는 말 → 취해서 늦게 돌아온다"
+  },
+  {
+   "source": "E1_4",
+   "relation": "SETS_UP",
+   "target": "E4_2",
+   "note": "한 달 넘은 기침 → 기침 소리가 없다"
+  },
+  {
+   "source": "E2_1",
+   "relation": "SETS_UP",
+   "target": "E3_1",
+   "note": "행운이 겁난다 → 웃다가 운다"
+  },
+  {
+   "source": "E3_2",
+   "relation": "SETS_UP",
+   "target": "E4_5",
+   "note": "취중의 '죽었다'는 말 → 사실이 된다"
+  },
+  {
+   "source": "E2_3",
+   "relation": "RHYMES_WITH",
+   "target": "E4_5",
+   "note": "애걸하던 큰 눈 ↔ 천장만 보는 눈"
+  },
+  {
+   "source": "E1_5",
+   "relation": "RHYMES_WITH",
+   "target": "E3_1",
+   "note": "때리고 뜨거워진 눈시울 ↔ 술집에서의 울음"
+  },
+  {
+   "source": "E1_1",
+   "relation": "RHYMES_WITH",
+   "target": "E4_3",
+   "note": "얼다 만 비 ↔ 빈 젖: 와야 할 것이 오지 않는다"
+  }
+ ]
+}

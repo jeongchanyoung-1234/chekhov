@@ -27,10 +27,12 @@ It grew out of revising one Korean short story through 50+ rounds with Claude Co
 ## Install
 
 ```bash
-pip install git+https://github.com/<owner>/chekhov   # until it is on PyPI
+pip install git+https://github.com/jeongchanyoung-1234/chekhov   # until it is on PyPI
 ```
 
 Python 3.10+. Manuscripts can be `.docx`, `.md` or `.txt`. Chapters are found by a heading pattern (default `[1] Title`, configurable).
+
+**Try it** on the bundled example, an excerpt of Hyeon Jin-geon's "A Lucky Day" (1924, public domain) with its graph: [examples/unsu-joeun-nal](examples/unsu-joeun-nal).
 
 ## Commands
 
@@ -46,7 +48,8 @@ chekhov count draft.docx                                 # characters and 200-ch
 - **evidence**: is every scene's sentence still in its chapter? A lightly edited sentence is reported with the closest current sentence (`evidence-changed`), so you can update the graph in one step. A sentence that is gone is `evidence-missing`.
 - **links**: edges that point at nothing; setups that come after their payoff (mark intended ones `"reverse": true`).
 - **coverage**: themes, chapters and persona traits that no scene embodies.
-- **rules**: invariants that carry a machine-readable `check` (forbidden terms, watched terms, questions in dialogue, regex), plus opt-in **rule packs** for language conventions (`--pack ko`).
+- **rules**: invariants that carry a machine-readable `check` (forbidden terms, watched terms, questions in dialogue, regex), plus opt-in **rule packs** for language conventions (`--pack ko`: emotion words, similes, conjecture, numeral style).
+- **anchors**: an evidence phrase that appears twice in its chapter is flagged as ambiguous.
 - `--exclude cut.txt` lists scenes cut on purpose (e.g. for a shorter contest edition).
 
 Exit code is 1 when there are errors, so it fits a pre-commit hook or an agent's post-edit hook.

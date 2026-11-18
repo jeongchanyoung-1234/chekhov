@@ -159,3 +159,24 @@ def test_hook_runs_only_on_change_and_blocks_on_errors(tmp_path, capsys):
 def test_hook_without_project_is_silent(tmp_path):
     from chekhov import hook
     assert hook.run(json.dumps({"cwd": str(tmp_path)})) == 0
+
+
+def test_ko_simile_vs_hedge():
+    ms = Manuscript(["[1] 봄", "반듯이 누웠다. 비가 올 듯하더니 그쳤다. 그는 미칠 듯이 울었다. 마치 꿈 같았다. 지친 것 같다."])
+    issues = checks.rules.check_packs(Graph({"meta": {}}), ms, ["ko/simile-markers", "ko/hedge-markers"])
+    token = lambda i: i.message.split("'")[1]  # the matched marker, not its context
+    simile = [token(i) for i in issues if i.code == "ko/simile-markers"]
+    hedge = [token(i) for i in issues if i.code == "ko/hedge-markers"]
+    assert not any("반듯" in m for m in simile + hedge)
+    assert any("듯이" in m for m in simile) and any("마치" in m for m in simile)
+    assert any("듯하" in m for m in hedge) and any("것 같다" in m for m in hedge)
+    # the old name still works and does not double-report
+    old = checks.rules.check_packs(Graph({"meta": {}}), ms, ["ko/metaphor-markers", "ko/simile-markers"])
+    assert len(old) == len(issues)
+
+
+def test_ambiguous_evidence_warns():
+    g = Graph({"nodes": [{"id": "E", "type": "Event", "chapter": 1, "evidence": "비가 온다."}], "edges": []})
+    ms = Manuscript(["[1] 봄", "비가 온다. 해가 진다. 비가 온다."])
+    issues = checks.evidence.check(g, ms, set())
+    assert [i.code for i in issues] == ["evidence-ambiguous"]

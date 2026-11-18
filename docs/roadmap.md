@@ -8,7 +8,7 @@ Repository, MIT license, graph format v0.1, packaging, tests.
 - [x] `impact`: links left with one end after a cut
 - [x] `audit`, `count`
 - [x] `init`: graph skeleton, agent rules, feedback log (ko/en)
-- [ ] public-domain example with a full graph (e.g. Hyeon Jin-geon, "A Lucky Day", 1924)
+- [x] public-domain example with a graph (excerpt of Hyeon Jin-geon, "A Lucky Day", 1924)
 - [ ] `check --fix-evidence`: update changed evidence sentences in the graph after confirmation
 - [ ] JSON Schema file for editor validation
 - [ ] CI (GitHub Actions) on Windows, macOS, Linux
@@ -18,7 +18,8 @@ Repository, MIT license, graph format v0.1, packaging, tests.
 - [x] `chekhov hook`: checks only on change, exit 2 shows errors to the agent, warns on Word lock files
 - [x] skills: `chekhov-setup`, `read-through`, `revise-chapter`, `abridge`, `log-round`
 - [x] marketplace entry at the repo root
-- [ ] field test on a full revision cycle with a public-domain story; tune the skills from what goes wrong
+- [x] field test on the example (found: noisy Korean metaphor rule → split into simile/hedge; ambiguous anchors → warning)
+- [ ] field test of the skills inside Claude Code on a full revision cycle
 - [ ] `init --agent claude` writes `CLAUDE.md` directly
 
 ## M3 · MCP server and docs

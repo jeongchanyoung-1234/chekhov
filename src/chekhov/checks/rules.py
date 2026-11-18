@@ -21,7 +21,7 @@ import re
 from ..issues import ERROR, WARNING, Issue
 from ..manuscript import Manuscript
 from ..model import Graph
-from ..rules import PACKS
+from ..rules import ALIASES, PACKS
 
 DIALOGUE_OPEN = ('"', "“", "「", "『")
 DIALOGUE_CLOSE = '"”」』'
@@ -97,9 +97,13 @@ def check_packs(graph: Graph, ms: Manuscript, packs: list[str] | None = None) ->
         if pack is None:
             issues.append(Issue(ERROR, "unknown-pack", f"no rule pack '{lang}'"))
             continue
-        for rule_id, fn in pack.items():
-            if (item and rule_id != item) or (lang, rule_id) in seen:
+        items = ALIASES.get(lang, {}).get(item, [item]) if item else list(pack)
+        for rule_id in items:
+            if rule_id not in pack:
+                issues.append(Issue(ERROR, "unknown-pack", f"no rule '{lang}/{rule_id}'"))
+                continue
+            if (lang, rule_id) in seen:
                 continue
             seen.add((lang, rule_id))
-            issues += fn(ms)
+            issues += pack[rule_id](ms)
     return issues

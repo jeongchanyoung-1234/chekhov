@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from difflib import SequenceMatcher
 
-from ..issues import ERROR, INFO, Issue
+from ..issues import ERROR, INFO, WARNING, Issue
 from ..manuscript import Manuscript, split_sentences
 from ..model import Graph
 
@@ -55,7 +55,12 @@ def check(graph: Graph, ms: Manuscript, excluded: set[str]) -> list[Issue]:
         if n["id"] in excluded:
             skipped += 1
             continue
-        if ev in ms.text(ch):
+        found = ms.text(ch).count(ev)
+        if found > 1:
+            issues.append(Issue(WARNING, "evidence-ambiguous",
+                                f"appears {found} times in the chapter; use a longer, unique phrase: {ev}",
+                                node=n["id"], chapter=ch))
+        if found:
             continue
         elsewhere = [k for k in ms.chapters if k != ch and ev in ms.text(k)]
         if elsewhere:

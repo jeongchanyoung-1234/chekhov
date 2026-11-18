@@ -1,0 +1,6 @@
+{
+ "graph": "graph.json",
+ "manuscript": "story.md",
+ "exclude": null,
+ "packs": []
+}
